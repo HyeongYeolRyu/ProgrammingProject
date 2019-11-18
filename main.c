@@ -1,5 +1,6 @@
 #include "common.h"
 #include "flashcard.h"
+#include "managedic.h"
 
 int main()
 {
@@ -25,6 +26,7 @@ int main()
 					break;
 			case '5': 
 				printf("\n프로그램을 종료합니다.\n");
+				sleep(2);
 				break;
 			default: 
 				printf("\n메뉴를 다시 선택하십시오.\n");
@@ -32,5 +34,7 @@ int main()
 				break;
 		}
 	}
+	system("clear");
+	
 	return 0;
 }

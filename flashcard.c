@@ -7,30 +7,30 @@ void SplitLine(char *line, char *output[])
 	output[1] = strtok(NULL, "");	// kor
 }
 
-void InsertWord(Word **head, Word *new_Word)
+void InsertWord(f_Word **head, f_Word *new_Word)
 {
 	if (*head == NULL)
 	{
 		*head = new_Word;
 		return;
 	}
-	Word *w = *head;
+	f_Word *w = *head;
 	while (w -> next != NULL)
 		w = w -> next;
 	w -> next = new_Word;
 }
 
-void InsertWords(Word **head, FILE *fp)
+void InsertWords(f_Word **head, FILE *fp)
 {
 	char *output[2];
-	Word *w;
+	f_Word *w;
 	char line[MAX_LEN_OF_INPUT];
 	while (fgets(line, sizeof(line), fp))
 	{
 		int line_len = strlen(line);
 		if (line[line_len - 1] == '\n')
 			line[line_len - 1] = '\0';
-		w = (Word *)malloc(sizeof(Word));
+		w = (f_Word *)malloc(sizeof(f_Word));
 		SplitLine(line, output);
 		w -> eng = (char *)malloc(sizeof(char) * strlen(output[0]) + 1);
 		strcpy(w -> eng, output[0]);
@@ -42,9 +42,9 @@ void InsertWords(Word **head, FILE *fp)
 	fclose(fp);
 }
 
-void PrintWords(Word **head, int speed)
+void PrintWords(f_Word **head, int speed)
 {
-	Word *ptr = *head;
+	f_Word *ptr = *head;
 	while (ptr != NULL)
 	{
 		system("clear");
@@ -59,12 +59,12 @@ void PrintWords(Word **head, int speed)
 	}
 }
 
-void FreeWords(Word **head)
+void FreeWords(f_Word **head)
 {
-	Word *w = *head;
+	f_Word *w = *head;
 	while (w != NULL)
 	{
-		Word *tmp = w;
+		f_Word *tmp = w;
 		free(tmp -> eng);
 		free(tmp -> kor);
 		free(tmp);
@@ -74,20 +74,20 @@ void FreeWords(Word **head)
 
 int Compare(const void *p, const void *q)
 {
-	return strcmp((*(Word **)p)->eng, (*(Word **)q)->eng);
+	return strcmp((*(f_Word **)p)->eng, (*(f_Word **)q)->eng);
 }
 
-void SortWords(Word **head)
+void SortWords(f_Word **head)
 {
 	int i, num_of_node = 0;
-	Word *ptr = *head, *new_head = NULL, **arr;
+	f_Word *ptr = *head, *new_head = NULL, **arr;
 
 	while (ptr != NULL)
 	{
 		ptr = ptr -> next;
 		num_of_node++;
 	}
-	arr = (Word **)malloc(sizeof(Word *) * num_of_node);
+	arr = (f_Word **)malloc(sizeof(f_Word *) * num_of_node);
 	ptr = *head;
 	for (i = 0; i < num_of_node; i++)
 	{
@@ -95,7 +95,7 @@ void SortWords(Word **head)
 		ptr = ptr -> next;
 	}
 
-	qsort(arr, num_of_node, sizeof(Word *), Compare);	
+	qsort(arr, num_of_node, sizeof(f_Word *), Compare);	
 	for (i = 0; i < num_of_node; i++)
 		arr[i] -> next = NULL;
 	for (i = 0; i < num_of_node; i++)
@@ -107,7 +107,7 @@ void SortWords(Word **head)
 void Flashcard()
 {
 	FILE *fp;
-	Word *wordlist = NULL;
+	f_Word *wordlist = NULL;
 	char day[MAX_FILE_NAME];
 	int print_way, speed;
 

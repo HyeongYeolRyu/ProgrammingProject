@@ -9,20 +9,20 @@
 #define MAX_LEN_OF_INPUT 1*15 + 3*30*2 + 5
 #define MAX_FILE_NAME sizeof(int) + 1
 
-typedef struct Word
+typedef struct f_Word
 {
 		char *eng;
 		char *kor;
-		struct Word *next;
-} Word;
+		struct f_Word *next;
+} f_Word;
 
 void SplitLine(char *line, char *output[]);
-void InsertWord(Word **head, Word *new_Word);
-void InsertWords(Word **head, FILE *fp);
-void PrintWords(Word **head, int speed);
-void FreeWords(Word **head);
+void InsertWord(f_Word **head, f_Word *new_Word);
+void InsertWords(f_Word **head, FILE *fp);
+void PrintWords(f_Word **head, int speed);
+void FreeWords(f_Word **head);
 int Compare(const void *p, const void *q);
-void SortWords(Word **head);
+void SortWords(f_Word **head);
 void Flashcard();
 
 #endif

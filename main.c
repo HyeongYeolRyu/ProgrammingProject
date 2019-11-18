@@ -9,7 +9,7 @@ int main()
 		system("clear");
 		printf(">> 영어 단어 암기 프로그램 <<\n");
 		printf("1. 영어 단어 맞추기    2. 플래쉬카드\n");
-		printf("3. 행맨(hangman)      4. 단어장 관리\n");
+		printf("3. 행맨(hangman)       4. 단어장 관리\n");
 		printf("5. 프로그램 종료\n\n");
 		printf("번호를 선택하세요 : ");
 		scanf(" %c", &select);

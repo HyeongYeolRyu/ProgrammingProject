@@ -22,7 +22,7 @@ int main()
 					break;
 			case '3': //myfunc3 
 					break;
-			case '4': //myfunc4 
+			case '4': managedic(); 
 					break;
 			case '5': 
 				printf("\n프로그램을 종료합니다.\n");	

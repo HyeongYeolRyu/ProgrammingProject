@@ -1,5 +1,6 @@
 #include "common.h"
 #include "flashcard.h"
+#include "guessword.h"
 
 int main()
 {
@@ -15,7 +16,7 @@ int main()
 		scanf(" %c", &select);
 		switch (select)
 		{
-			case '1': //myfunc1
+			case '1': Guessword();
 					break;
 			case '2': Flashcard();
 					break;

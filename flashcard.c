@@ -32,7 +32,7 @@ int InsertWords(f_Word **head, FILE *fp)
 		int is_empty_line = 1;
 		int line_len = strlen(line);
 		
-		for (i = 0 ; i < line_len; i++) 
+		for (i = 0; i < line_len; i++) 
 		{
 			if (!isspace(line[i]))
 			{

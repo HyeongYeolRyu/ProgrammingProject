@@ -1,6 +1,5 @@
 #include "common.h"
 #include "flashcard.h"
-#include "managedic.h"
 
 int main()
 {

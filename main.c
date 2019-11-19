@@ -1,6 +1,5 @@
 #include "common.h"
 #include "flashcard.h"
-#include "managedic.h"
 
 int main()
 {
@@ -22,7 +21,7 @@ int main()
 					break;
 			case '3': //myfunc3 
 					break;
-			case '4': managedic();
+			case '4':  //myfunc4
 					break;
 			case '5': 
 				printf("\n프로그램을 종료합니다.\n");	
@@ -35,5 +34,6 @@ int main()
 		}
 	}
 	system("clear");
+	
 	return 0;
 }

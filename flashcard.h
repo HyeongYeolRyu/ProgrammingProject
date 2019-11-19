@@ -8,6 +8,7 @@
 #define SYSTEM_SLEEP_SPEED 2
 #define MAX_LEN_OF_INPUT 1*15 + 3*30*2 + 5
 #define MAX_FILE_NAME sizeof(int) + 1
+#define MAX_SHUFFLE_VALUE 1000
 
 typedef struct f_Word
 {
@@ -18,11 +19,13 @@ typedef struct f_Word
 
 void SplitLine(char *line, char *output[]);
 void InsertWord(f_Word **head, f_Word *new_Word);
-void InsertWords(f_Word **head, FILE *fp);
+int InsertWords(f_Word **head, FILE *fp);
 void PrintWords(f_Word **head, int speed);
 void FreeWords(f_Word **head);
 int Compare(const void *p, const void *q);
-void SortWords(f_Word **head);
+void swap_word(f_Word **p1, f_Word **q1);
+void shuffle(f_Word **arr, int num_of_nodes);
+void SortWords(f_Word **head, int num_of_nodes);
 void Flashcard();
 
 #endif

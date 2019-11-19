@@ -20,14 +20,28 @@ void InsertWord(f_Word **head, f_Word *new_Word)
 	w -> next = new_Word;
 }
 
-void InsertWords(f_Word **head, FILE *fp)
+int InsertWords(f_Word **head, FILE *fp)
 {
 	char *output[2];
 	f_Word *w;
 	char line[MAX_LEN_OF_INPUT];
 	while (fgets(line, sizeof(line), fp))
 	{
+		int i, is_empty_file = 1;
 		int line_len = strlen(line);
+		
+		for (i = 0 ; i < line_len; i++) // check whether given dic file is empty or not
+		{
+			if (!isspace(line[i]))
+			{
+				is_empty_file = 0;
+			}
+		}
+		if (is_empty_file)
+		{
+			fclose(fp);
+			return -1;
+		}
 		if (line[line_len - 1] == '\n')
 			line[line_len - 1] = '\0';
 		w = (f_Word *)malloc(sizeof(f_Word));
@@ -40,6 +54,7 @@ void InsertWords(f_Word **head, FILE *fp)
 		InsertWord(head, w);
 	}
 	fclose(fp);
+	return 0;
 }
 
 void PrintWords(f_Word **head, int speed)
@@ -77,29 +92,61 @@ int Compare(const void *p, const void *q)
 	return strcmp((*(f_Word **)p)->eng, (*(f_Word **)q)->eng);
 }
 
-void SortWords(f_Word **head)
+void swap_word(f_Word **p1, f_Word **q1)
 {
-	int i, num_of_node = 0;
+	f_Word *tmp = *p1;
+	*p1 = *q1;
+	*q1 = tmp;
+}
+
+void shuffle(f_Word **arr, int num_of_nodes)
+{
+	int i, idx1, idx2;
+	srand(time(NULL));
+	for (i = 0; i < MAX_SHUFFLE_VALUE; i++)
+	{
+		idx1 = rand() % num_of_nodes;
+		idx2 = rand() % num_of_nodes;
+		swap_word(&arr[idx1], &arr[idx2]);
+	}
+}
+
+void SortWords(f_Word **head, int order_option)
+{
+	int i, num_of_nodes = 0;
 	f_Word *ptr = *head, *new_head = NULL, **arr;
 
 	while (ptr != NULL)
 	{
 		ptr = ptr -> next;
-		num_of_node++;
+		num_of_nodes++;
 	}
-	arr = (f_Word **)malloc(sizeof(f_Word *) * num_of_node);
+
+	arr = (f_Word **)malloc(sizeof(f_Word *) * num_of_nodes);
 	ptr = *head;
-	for (i = 0; i < num_of_node; i++)
+	for (i = 0; i < num_of_nodes; i++)
 	{
 		arr[i] = ptr;
 		ptr = ptr -> next;
 	}
 
-	qsort(arr, num_of_node, sizeof(f_Word *), Compare);	
-	for (i = 0; i < num_of_node; i++)
+	if (order_option == 1) // alphabetical order
+	{
+		qsort(arr, num_of_nodes, sizeof(f_Word *), Compare);	
+	}
+	else // random order
+	{
+		shuffle(arr, num_of_nodes);
+	}
+	
+	for (i = 0; i < num_of_nodes; i++)
+	{	
 		arr[i] -> next = NULL;
-	for (i = 0; i < num_of_node; i++)
+	}
+	for (i = 0; i < num_of_nodes; i++)
+	{
 		InsertWord(&new_head, arr[i]);
+	}
 	*head = new_head;
 	free(arr);
 }
@@ -109,7 +156,7 @@ void Flashcard()
 	FILE *fp;
 	f_Word *wordlist = NULL;
 	char day[MAX_FILE_NAME];
-	int print_way, speed;
+	int order_option, speed;
 
 	// 설정 입력
 	printf("속도(초) : ");
@@ -123,14 +170,24 @@ void Flashcard()
 		return;
 	}
 	printf("출력 방식(알파벳 순서대로 : 1, 무작위 : 2) : ");
-	scanf("%d", &print_way);
+	scanf("%d", &order_option);
+	if (!(order_option == 1 || order_option == 2))
+	{
+		printf(" >> 출력 방식 입력 에러 : 1(알파벳 순서대로) 또는 2(무작위)를 입력해야 합니다. <<\n");
+		sleep(SYSTEM_SLEEP_SPEED);
+		return;	
+	}
 
 	// file 내 단어들 삽입
-	InsertWords(&wordlist, fp);
+	if(InsertWords(&wordlist, fp))
+	{
+		printf(" >> 데이터 파일 에러 : 입력한 파일에 아무 단어도 없습니다. <<\n");
+		sleep(SYSTEM_SLEEP_SPEED);
+		return;	
+	}
 
-	// 알파벳 순으로 정렬할 경우
-	if (print_way == 1)
-		SortWords(&wordlist);
+	// 알파벳 순 / 무작위 정렬
+	SortWords(&wordlist, order_option);
 
 	system("clear");
 	printf(TITLE);

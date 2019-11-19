@@ -23,25 +23,29 @@ void InsertWord(f_Word **head, f_Word *new_Word)
 int InsertWords(f_Word **head, FILE *fp)
 {
 	char *output[2];
+	int is_empty_file = 1;
 	f_Word *w;
 	char line[MAX_LEN_OF_INPUT];
 	while (fgets(line, sizeof(line), fp))
 	{
-		int i, is_empty_file = 1;
+		int i; 
+		int is_empty_line = 1;
 		int line_len = strlen(line);
 		
-		for (i = 0 ; i < line_len; i++) // check whether given dic file is empty or not
+		for (i = 0 ; i < line_len; i++) 
 		{
 			if (!isspace(line[i]))
 			{
+				is_empty_line = 0;
 				is_empty_file = 0;
 			}
 		}
-		if (is_empty_file)
+
+		if (is_empty_line)
 		{
-			fclose(fp);
-			return -1;
+			continue;
 		}
+
 		if (line[line_len - 1] == '\n')
 			line[line_len - 1] = '\0';
 		w = (f_Word *)malloc(sizeof(f_Word));
@@ -52,6 +56,11 @@ int InsertWords(f_Word **head, FILE *fp)
 		strcpy(w -> kor, output[1]);
 		w -> next = NULL;
 		InsertWord(head, w);
+	}
+	if (is_empty_file) // check whether given dic file is empty or not
+	{
+		fclose(fp);
+		return -1;
 	}
 	fclose(fp);
 	return 0;

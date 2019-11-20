@@ -3,6 +3,8 @@
 void managedic()//단어장 관리 기능
 {
     int num;
+    while(1)
+    {
     system("clear");
     printf(">> 영어 단어 암기 프로그램 : 단어장 관리 <<\n");
     printf("1. 새 파일 추가하기          2. 새 단어 추가하기\n");
@@ -29,6 +31,7 @@ void managedic()//단어장 관리 기능
 	case 5:
 	    return;
     }
+    }
 }
 
 void file_add()//새 파일 추가
@@ -36,11 +39,12 @@ void file_add()//새 파일 추가
     system("clear");
     printf(">> 영어 단어 암기 프로그램 : 단어장 관리 : 새 파일 추가 <<\n");
 
-    char buf[120], filename[10];
+    char buf[200], filename[10];
     int cnt=0,space=0;
     m_Word Word;
     FILE *fp,*fp2;
     fp=fopen("dic.list","r+");
+    system("ls -v *.dic > dic.list");
 
     while(1)
     {
@@ -56,6 +60,7 @@ void file_add()//새 파일 추가
 	    break;
 	}
     }
+    system("ls -v *.dic > dic.list");
     fclose(fp);
 
     fp2=fopen(filename,"w+");
@@ -87,16 +92,17 @@ void file_add()//새 파일 추가
 	{
 	    printf("영어 단어는 최대 15자 까지 입력 가능합니다.\n");
 	    sleep(1);
-	    exit(0);
+	    return;
 	}
 
-	if(strlen(Word.mean1)>30||strlen(Word.mean2)>30||strlen(Word.mean3)>30)
+	else if(strlen(Word.mean1)>30||strlen(Word.mean2)>30||strlen(Word.mean3)>30)
 	{
 	    printf("한글 뜻은 1개당 최대 30자 까지 입력 가능합니다.\n");
 	    sleep(1);
-	    exit(0);
+	    return;
 	}
-
+	if(cnt==0)
+	    rewind(fp);
 	fwrite(buf, sizeof(char), strlen(buf), fp2);
 	fputs("\n",fp2);
 	space=0;
@@ -109,7 +115,7 @@ void file_add()//새 파일 추가
 void Word_add()//새 단어 추가
 {
     FILE *fp;
-    char filename[10], buf[120];
+    char filename[10], buf[200];
     int num,cnt=0,space=0;
     m_Word Word;
 
@@ -126,7 +132,7 @@ void Word_add()//새 단어 추가
 
     while(cnt<20)
     {
-	fgets(buf,120,stdin);
+	fgets(buf,200,stdin);
 	buf[strlen(buf)-1]='\0';
 
 	if(!strcmp(buf,".add"))
@@ -151,14 +157,14 @@ void Word_add()//새 단어 추가
 	{
 	    printf("영어 단어는 최대 15자 까지 입력 가능합니다.\n");
 	    sleep(1);
-	    exit(0);
+	    return;
 	}
 
 	if(strlen(Word.mean1)>30||strlen(Word.mean2)>30||strlen(Word.mean3)>30)
 	{
 	    printf("한글 뜻은 1개당 최대 30자 까지 입력 가능합니다.\n");
 	    sleep(1);
-	    exit(0);
+	    return;
 	}
 
 	fwrite(buf, sizeof(char), strlen(buf), fp);
@@ -167,14 +173,13 @@ void Word_add()//새 단어 추가
 	cnt++;
     }
     fclose(fp);
-    system("clear");
 }
 
 void Words_see()//단어장 보기
 {
     FILE *fp;
     int num;
-    char buf[130],buf2[130],ch,filename[10];
+    char buf[200],buf2[200],ch,filename[10];
     printf("파일명(일차) : ");
     scanf("%d",&num);
 
@@ -192,6 +197,7 @@ void Words_see()//단어장 보기
 
     printf("-----단어장-----------\n");
 
+    rewind(fp);
     while(fgets(buf,sizeof(buf),fp)!=NULL)
     {
 	printf("%s",buf);
@@ -202,7 +208,7 @@ void Words_see()//단어장 보기
     printf("\n"); 
     printf("ENTER 키 입력 시 Main 화면으로 돌아갑니다.\n");
     if((ch=getchar())=='\n')
-	system("clear");
+	return;
 
 }
 
@@ -210,7 +216,7 @@ void Word_file_list()//파일 목록 보기
 {
     FILE *fp;
     int num=0;
-    char buf[130],ch;
+    char buf[200],ch;
     ch=getchar();
     printf("-----단어 파일 목록-----------\n");
     fp=fopen("dic.list","r");
@@ -229,5 +235,5 @@ void Word_file_list()//파일 목록 보기
     printf("\n");
     printf("ENTER 키 입력 시 Main 화면으로 돌아갑니다. \n");
     if((ch=getchar())!='\n')
-	system("clear");
+	return;
 }

@@ -70,7 +70,8 @@ void GuessWords(g_Word **head)
 	g_Word *ptr = *head;
 	char an[MAX_LEN_OF_INPUT];
 	float score=0;
-	int cnt_all=0,cnt_cor=0;
+	int cnt_cor=0,cnt_incor=0;
+	
 	while (strcmp(an,".quit") != 0)
 	{
 		printf("%s -> ", ptr->kor);
@@ -82,16 +83,21 @@ void GuessWords(g_Word **head)
 		else if(strcmp(an,".quit") == 0)
 			continue;
 		else
+		{
 			printf("incorrect!\n");
+			++cnt_incor;
+		}
 		ptr = ptr -> next;
 		if(ptr == NULL){
 			printf("단어가 없어욤 뿌우\n");
 			break;
 		}
-		++cnt_all;
 	}
-//	printf("전체 : %d, 맞은 것 : %d",cnt_all, cnt_cor);
-	score = (float)cnt_cor/(float)cnt_all * 100;
+	//printf("전체 : %d, 맞은 것 : %d",cnt_cor+cnt_incor, cnt_cor);
+	if (cnt_cor + cnt_incor == 0)
+		score = 0;
+	else
+		score = (float)cnt_cor/(float)(cnt_cor+cnt_incor) * 100;
 	printf("당신의 점수는 %.2f 점입니다.\n",score);
 }
 

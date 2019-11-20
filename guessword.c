@@ -84,6 +84,10 @@ void GuessWords(g_Word **head)
 		else
 			printf("incorrect!\n");
 		ptr = ptr -> next;
+		if(ptr == NULL){
+			printf("단어가 없어욤 뿌우\n");
+			break;
+		}
 		++cnt_all;
 	}
 //	printf("전체 : %d, 맞은 것 : %d",cnt_all, cnt_cor);

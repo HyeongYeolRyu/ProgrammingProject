@@ -6,7 +6,7 @@ int main()
 {
 	char select = -1;
 	while (select != '5')
-	{
+	{			
 		system("clear");
 		printf(">> 영어 단어 암기 프로그램 <<\n");
 		printf("1. 영어 단어 맞추기    2. 플래쉬카드\n");
@@ -16,7 +16,9 @@ int main()
 		scanf(" %c", &select);
 		switch (select)
 		{
-			case '1': Guessword();
+			case '1': Guessword();	
+					getchar(); // enter를 눌러야 break문 도달
+					getchar();
 					break;
 			case '2': Flashcard();
 					break;

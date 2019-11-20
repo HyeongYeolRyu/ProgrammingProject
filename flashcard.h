@@ -23,8 +23,8 @@ int InsertWords(f_Word **head, FILE *fp);
 void PrintWords(f_Word **head, int speed);
 void FreeWords(f_Word **head);
 int Compare(const void *p, const void *q);
-void swap_word(f_Word **p1, f_Word **q1);
-void shuffle(f_Word **arr, int num_of_nodes);
+void Swap_word(f_Word **p1, f_Word **q1);
+void Shuffle(f_Word **arr, int num_of_nodes);
 void SortWords(f_Word **head, int order_option);
 void Flashcard();
 

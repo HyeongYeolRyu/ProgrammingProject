@@ -104,6 +104,7 @@ void file_add()//새 파일 추가
 	if(cnt==0)
 	    rewind(fp);
 	fwrite(buf, sizeof(char), strlen(buf), fp2);
+	fflush(fp2);
 	fputs("\n",fp2);
 	space=0;
 	cnt++;
@@ -168,6 +169,7 @@ void Word_add()//새 단어 추가
 	}
 
 	fwrite(buf, sizeof(char), strlen(buf), fp);
+	fflush(fp);
 	fputs("\n",fp);
 	space=0;
 	cnt++;

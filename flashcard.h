@@ -25,7 +25,7 @@ void FreeWords(f_Word **head);
 int Compare(const void *p, const void *q);
 void swap_word(f_Word **p1, f_Word **q1);
 void shuffle(f_Word **arr, int num_of_nodes);
-void SortWords(f_Word **head, int num_of_nodes);
+void SortWords(f_Word **head, int order_option);
 void Flashcard();
 
 #endif

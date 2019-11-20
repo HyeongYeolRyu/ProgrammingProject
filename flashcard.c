@@ -3,7 +3,7 @@
 void SplitLine(char *line, char *output[])
 {
 	char *p = strtok(line, " ");
-	output[0] = p; 					// eng 
+	output[0] = p; 			// eng 
 	output[1] = strtok(NULL, "");	// kor
 }
 
@@ -47,7 +47,9 @@ int InsertWords(f_Word **head, FILE *fp)
 		}
 
 		if (line[line_len - 1] == '\n')
+		{
 			line[line_len - 1] = '\0';
+		}
 		w = (f_Word *)malloc(sizeof(f_Word));
 		SplitLine(line, output);
 		w -> eng = (char *)malloc(sizeof(char) * strlen(output[0]) + 1);
@@ -101,14 +103,14 @@ int Compare(const void *p, const void *q)
 	return strcmp((*(f_Word **)p)->eng, (*(f_Word **)q)->eng);
 }
 
-void swap_word(f_Word **p1, f_Word **q1)
+void Swap_word(f_Word **p1, f_Word **q1)
 {
 	f_Word *tmp = *p1;
 	*p1 = *q1;
 	*q1 = tmp;
 }
 
-void shuffle(f_Word **arr, int num_of_nodes)
+void Shuffle(f_Word **arr, int num_of_nodes)
 {
 	int i, idx1, idx2;
 	srand(time(NULL));
@@ -116,7 +118,7 @@ void shuffle(f_Word **arr, int num_of_nodes)
 	{
 		idx1 = rand() % num_of_nodes;
 		idx2 = rand() % num_of_nodes;
-		swap_word(&arr[idx1], &arr[idx2]);
+		Swap_word(&arr[idx1], &arr[idx2]);
 	}
 }
 
@@ -145,7 +147,7 @@ void SortWords(f_Word **head, int order_option)
 	}
 	else // random order
 	{
-		shuffle(arr, num_of_nodes);
+		Shuffle(arr, num_of_nodes);
 	}
 	
 	for (i = 0; i < num_of_nodes; i++)

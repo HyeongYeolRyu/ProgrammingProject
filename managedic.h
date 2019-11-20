@@ -5,9 +5,9 @@
 
 typedef struct m_Word{
     char spell[15];
-    char mean1[30];
-    char mean2[30];
-    char mean3[30];
+    char mean1[61];
+    char mean2[61];
+    char mean3[61];
     struct m_Word *next;
 }m_Word;
 

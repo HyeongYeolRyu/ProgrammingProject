@@ -17,8 +17,8 @@ int main()
 		switch (select)
 		{
 			case '1': Guessword();	
-					getchar(); // enter를 눌러야 break문 도달
-					getchar();
+					//getchar(); // enter를 눌러야 break문 도달
+					//getchar();
 					break;
 			case '2': Flashcard();
 					break;

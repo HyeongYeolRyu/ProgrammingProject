@@ -69,6 +69,7 @@ void GuessWords(g_Word **head)
 {
 	g_Word *ptr = *head;
 	char an[MAX_LEN_OF_INPUT];
+	char ch;
 	float score=0;
 	int cnt_cor=0,cnt_incor=0;
 	
@@ -99,6 +100,11 @@ void GuessWords(g_Word **head)
 	else
 		score = (float)cnt_cor/(float)(cnt_cor+cnt_incor) * 100;
 	printf("당신의 점수는 %.2f 점입니다.\n",score);
+
+	getchar();
+	printf("\nENTER 키 입력 시 Main 화면으로 돌아갑니다.\n");
+	if((ch=getchar())=='\n')
+		return;
 }
 
 void g_FreeWords(g_Word **head)

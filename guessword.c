@@ -89,7 +89,7 @@ void GuessWords(g_Word **head)
 		}
 		ptr = ptr -> next;
 		if(ptr == NULL){
-			printf("단어가 없어욤 뿌우\n");
+			printf("\n마지막 단어였습니다*^^*\n\n");
 			break;
 		}
 	}

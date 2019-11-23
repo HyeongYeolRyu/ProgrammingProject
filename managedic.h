@@ -4,7 +4,7 @@
 #include "common.h"
 
 typedef struct m_Word{
-    char spell[15];
+    char spell[16];
     char mean1[61];
     char mean2[61];
     char mean3[61];

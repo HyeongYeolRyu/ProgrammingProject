@@ -18,7 +18,7 @@ int main()
 		{
 			case '1': //myfunc1
 					break;
-			case '2': //Flashcard();
+			case '2': Flashcard();
 					break;
 			case '3': //myfunc3 
 					break;
@@ -35,6 +35,10 @@ int main()
 		}
 	}
 	system("clear");
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> feature/flashcard
 	return 0;
 }

@@ -5,32 +5,32 @@ void managedic()//단어장 관리 기능
     int num;
     while(1)
     {
-    system("clear");
-    printf(">> 영어 단어 암기 프로그램 : 단어장 관리 <<\n");
-    printf("1. 새 파일 추가하기          2. 새 단어 추가하기\n");
-    printf("3. 단어장 보기               4. 단어 파일 목록보기\n");
-    printf("5. 단어장 관리 종료\n\n");
+	system("clear");
+	printf(">> 영어 단어 암기 프로그램 : 단어장 관리 <<\n");
+	printf("1. 새 파일 추가하기          2. 새 단어 추가하기\n");
+	printf("3. 단어장 보기               4. 단어 파일 목록보기\n");
+	printf("5. 단어장 관리 종료\n\n");
 
-    printf("번호를 입력하세요 : ");
-    scanf("%d",&num);
+	printf("번호를 입력하세요 : ");
+	scanf("%d",&num);
 
-    switch(num)
-    {
-	case 1:
-	    file_add();
-	    break;
-	case 2:
-	    Word_add();
-	    break;
-	case 3:
-	    Words_see();
-	    break;
-	case 4:
-	    Word_file_list();
-	    break;
-	case 5:
-	    return;
-    }
+	switch(num)
+	{
+	    case 1:
+		file_add();
+		break;
+	    case 2:
+		Word_add();
+		break;
+	    case 3:
+		Words_see();
+		break;
+	    case 4:
+		Word_file_list();
+		break;
+	    case 5:
+		return;
+	}
     }
 }
 
@@ -48,7 +48,7 @@ void file_add()//새 파일 추가
 
     while(1)
     {
-	if(fgets(buf,120,fp)!=NULL)
+	if(fgets(buf,sizeof(buf),fp)!=NULL)
 	{
 	    ++cnt;
 	    continue;
@@ -64,10 +64,10 @@ void file_add()//새 파일 추가
     fclose(fp);
 
     fp2=fopen(filename,"w+");
-    
+
     while(cnt<20)
     {
-	fgets(buf,120,stdin);
+	fgets(buf,sizeof(buf),stdin);
 	buf[strlen(buf)-1]='\0';
 
 	if(!strcmp(buf,".add"))
@@ -101,8 +101,6 @@ void file_add()//새 파일 추가
 	    sleep(1);
 	    return;
 	}
-	if(cnt==0)
-	    rewind(fp);
 	fwrite(buf, sizeof(char), strlen(buf), fp2);
 	fflush(fp2);
 	fputs("\n",fp2);
@@ -133,7 +131,7 @@ void Word_add()//새 단어 추가
 
     while(cnt<20)
     {
-	fgets(buf,200,stdin);
+	fgets(buf,sizeof(buf),stdin);
 	buf[strlen(buf)-1]='\0';
 
 	if(!strcmp(buf,".add"))
@@ -167,6 +165,13 @@ void Word_add()//새 단어 추가
 	    sleep(1);
 	    return;
 	}
+	//11월 23일 수정 시작 부분
+	/*fseek(fp,-2,SEEK_END);
+	  ch=fgetc(fp);
+	  if(ch!='\n')
+	  fputs("\n",fp);
+	  fseek(fp,0,SEEK_END);*/
+	//11월 23일 수정 끝 부분
 
 	fwrite(buf, sizeof(char), strlen(buf), fp);
 	fflush(fp);
@@ -194,7 +199,7 @@ void Words_see()//단어장 보기
 	printf("ENTER 키 입력 시 Main 화면으로 돌아갑니다.\n");
 	if((ch=getchar())=='\n')
 	    system("clear");
-		return;
+	return;
     }
 
     printf("-----단어장-----------\n");

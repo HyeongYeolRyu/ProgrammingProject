@@ -95,7 +95,7 @@ void file_add()//새 파일 추가
 	    return;
 	}
 
-	else if(strlen(Word.mean1)>30||strlen(Word.mean2)>30||strlen(Word.mean3)>30)
+	else if(strlen(Word.mean1)>60||strlen(Word.mean2)>60||strlen(Word.mean3)>60)
 	{
 	    printf("한글 뜻은 1개당 최대 30자 까지 입력 가능합니다.\n");
 	    sleep(1);
@@ -159,7 +159,7 @@ void Word_add()//새 단어 추가
 	    return;
 	}
 
-	if(strlen(Word.mean1)>30||strlen(Word.mean2)>30||strlen(Word.mean3)>30)
+	if(strlen(Word.mean1)>60||strlen(Word.mean2)>60||strlen(Word.mean3)>60)
 	{
 	    printf("한글 뜻은 1개당 최대 30자 까지 입력 가능합니다.\n");
 	    sleep(1);

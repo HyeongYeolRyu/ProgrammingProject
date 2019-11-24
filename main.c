@@ -2,6 +2,7 @@
 #include "flashcard.h"
 #include "managedic.h"
 #include "guessword.h"
+#include "hangman.h"
 
 int main()
 {
@@ -21,7 +22,7 @@ int main()
 					break;
 			case '2': Flashcard();
 					break;
-			case '3': //myfunc3 
+			case '3': Hangman();
 					break;
 			case '4': managedic(); 
 					break;

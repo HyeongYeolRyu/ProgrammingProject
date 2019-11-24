@@ -176,6 +176,7 @@ void Word_add()//새 단어 추가
 	fwrite(buf, sizeof(char), strlen(buf), fp);
 	fflush(fp);
 	fputs("\n",fp);
+	fflush(fp);
 	space=0;
 	cnt++;
     }

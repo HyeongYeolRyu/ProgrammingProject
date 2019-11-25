@@ -1,7 +1,7 @@
 #ifndef _HANGMAN_H
 #define _HANGMAN_H
 
-#define TITLE_H ">> 영어 단어 암기 프로그램 : 행맨 <<\n\n\n\n\n"
+#define TITLE_H ">> 영어 단어 암기 프로그램 : 행맨 <<"
 #define MAX_LEN_OF_INPUT 1*15 + 3*30*2 + 5
 #define MAX_FILE_NAME sizeof(int) + 1
 #define SYSTEM_SLEEP_SPEED 2

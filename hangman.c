@@ -114,9 +114,7 @@ void PrintHangman(int num_of_errors)
     if (num_of_errors >= 6) printf(" \\");
 
     if (num_of_errors == 0) printf("\n\n\n");
-    else if (num_of_errors == 1) printf("\n\n");
-    else if (num_of_errors == 2 || num_of_errors == 3) printf("\n\n");
-    else if (num_of_errors == 4) printf("\n");
+    else if (num_of_errors == 1 || num_of_errors == 2 || num_of_errors == 3) printf("\n\n");
     else printf("\n");
     
     printf("\n\n");

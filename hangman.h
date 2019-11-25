@@ -22,6 +22,7 @@ int h_InsertWords(h_Word **head, FILE *fp);
 void GetRandomWord(h_Word **head, h_Word **target_word);
 void h_FreeWords(h_Word **head);
 int UpdateCorrectArr(char *correct_char, char *eng, int eng_len, char ch);
+int IsCorrectAnswer(char *correct_char, int eng_len);
 void PrintHangman(int num_of_errors);
 void PrintCurrentText(char *correct_char, char *eng, int eng_len);
 void PlayHangman(h_Word *target_word);

@@ -205,13 +205,6 @@ void PlayHangman(h_Word *target_word)
             num_of_errors++;
         }
 
-        /*
-        printf("============\n");
-        for (i = 0; i< eng_len; i++)
-            printf("%d ", correct_char[i]);
-        printf("\n============\n");
-        */
-
         if (IsCorrectAnswer(correct_char, eng_len))
         {
             printf(MSG_SUCCESS);

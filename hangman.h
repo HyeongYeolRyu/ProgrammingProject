@@ -6,7 +6,7 @@
 #define MAX_FILE_NAME sizeof(int) + 1
 #define SYSTEM_SLEEP_SPEED 2
 #define MSG_FAIL "실패하였습니다...\n"
-#define MSG_SUCCESS "##########################\n### Congratulations!!! ###\n##########################\n\n"
+#define MSG_SUCCESS "\t##########################\n\t### Congratulations!!! ###\n\t##########################\n\n"
 
 #include "common.h"
 

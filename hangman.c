@@ -229,6 +229,7 @@ void PlayHangman(h_Word *target_word)
 
         num_of_try++;
     }
+	free(correct_char);
 }
 
 void Hangman()

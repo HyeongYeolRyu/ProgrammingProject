@@ -27,7 +27,7 @@ int main()
 			case '4': managedic(); 
 					break;
 			case '5': 
-				printf("\n프로그램을 종료합니다.\n");	
+				printf("\n프로그램을 종료합니다.\n");
 				sleep(2);
 				break;
 			default: 

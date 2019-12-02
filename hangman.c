@@ -56,7 +56,7 @@ void PrintHangman(int ErrorCount)
 	if (ErrorCount >= 1) printf("                   O\n");
 	if (ErrorCount >= 2) printf("                 / ");
 	if (ErrorCount >= 3) printf("|");
-	if (ErrorCount >= 4) printf("\\\n");
+	if (ErrorCount >= 4) printf(" \\\n");
 	if (ErrorCount >= 5) printf("                  /");
 	if (ErrorCount >= 6) printf(" \\");
 

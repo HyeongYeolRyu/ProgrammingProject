@@ -1,200 +1,170 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <termio.h>
+#include "hangman.h"
 
 
-typedef struct _word {
-  char* eng;
-  char* kor;
-  struct _word* next;
-} word;
+int GetWord(char* targetEng, char* targetKor)
+{
+	int RandomNumber;
+	FILE* fp;
+	int DayCount;
+	char* FileNames[3] = { "1.dic", "2.dic", "3.dic" };
+	int i;
+	char tempStr[ENG_LEN + KOR_LEN];
 
-typedef struct _list {
-  int count;
-  word* head;
-} list;
 
-list* word_list[4];
+	// 시드 설정
+	srand((unsigned int)time(NULL));
+	// 1 ~ 30 까지중 랜덤한 숫자 하나 선택1
+	RandomNumber = rand() % 30 + 1;
 
-void word_add(list* list, char eng[], char kor[]) {
-   word* new = (word*)malloc(sizeof(word));
+	// 파일명 입력
+	printf("파일명(일차) : ");
+	scanf("%d", &DayCount);
+	
+	// 파일 오픈
+	fp = fopen(FileNames[DayCount - 1], "r");
+	if (fp == NULL)
+	{
+		// 오픈 에러
+		printf("FILE ERROR\n");
+		return FILE_ERROR;
+	}
 
-  new->eng = (char*)calloc(strlen(eng)+1, sizeof(char));
-  strcpy(new->eng, eng);
 
-  new->kor = (char*)calloc(strlen(kor)+1, sizeof(char));
-  strcpy(new->kor, kor);
-  if(list->count == 0) {        //리스트에 아무것도 없을 때
-    new->next = list->head;     //new의 다음 노드는 리스트의 첫번째 노드(NULL)
-    list->head = new;           //리스트의 헤드는 new
-  }                             //
-  else {                        //리스트에 노드가 하나 이상 있을 때
-      word* tmp = list->head;   //tmp : 회원 리스트의 첫번째 노드
-      int i;
-      for(i = 1; i < list->count; i++) {
-         tmp = tmp->next;
-      }                           //마지막 노드를 찾을 때 까지 다음 노드로 넘김
-      new->next = tmp->next;      //new의 다음 노드는 tmp의 다음 노드
-      tmp->next = new;            //tmp의 다음 노드는 new
-   }
-   list->count++;
+	// 랜덤한 숫자까지 읽어서 tempStr 에 저장
+	for (i = 0; i < RandomNumber; i++)
+	{
+		fgets(tempStr, ENG_LEN + KOR_LEN, fp);
+	}
+
+	// 진짜 데이터 (마지막에 읽은 데이터를 토큰분리하여 저장)
+	strcpy(targetEng, strtok(tempStr, " "));
+	strcpy(targetKor, strtok(NULL, ""));
+	// 엔터기 NULL로 변경
+	targetKor[strlen(targetKor) - 1] = 0;
+
+	// 파일 닫기
+	fclose(fp);
+
+	return NO_ERROR;
 }
 
-void list_init(list* list) {
-  //회원 리스트 초기화 함수
-   list->count = 0;
-   list->head = NULL;
+
+// 현재 상태 출력
+void PrintHangman(int ErrorCount)
+{
+	if (ErrorCount >= 0) printf("-------------------+\n");
+	if (ErrorCount >= 1) printf("                   O\n");
+	if (ErrorCount >= 2) printf("                 / ");
+	if (ErrorCount >= 3) printf("|");
+	if (ErrorCount >= 4) printf("\\\n");
+	if (ErrorCount >= 5) printf("                  /");
+	if (ErrorCount >= 6) printf(" \\");
+
+	if (ErrorCount == 0) printf("\n\n\n");
+	else if (ErrorCount == 1) printf("\n\n");
+	else if (ErrorCount == 2 || ErrorCount == 3) printf("\n\n");
+	else if (ErrorCount == 4) printf("\n");
+	else printf("\n");
+
+	printf("\n\n");
 }
 
-void list_read(list* list, int num) {
-  //회원 노드 불러오기 함수
-  char filename[10];
-  sprintf(filename, "%d.dic", num);
-  FILE *fp = fopen(filename, "r");
-  char text[300];
-  int i = 0;
-  while(1) {
-       if(fgets(text, 400, fp) == NULL) {
-            break;
-       }
-      char a[30], b[30];
-      char* ptr;
-      ptr = strtok(text, " ");
-      strcpy(a, ptr);
-      ptr = strtok(NULL, " ");
-      strcpy(b, strtok(ptr, "\n"));
-      word_add(list, a, b);
-   }
-   fclose(fp);
+// 정답 출력(현재까지 맞춘 정답)
+void PrintAnswer(char* targetEng, char* Answer, int* ErrorCount)
+{
+	// 정답의 글자수
+	int AnsLen = strlen(Answer);
+	// 기타 변수
+	int i;
+	char Alpha;
+	// 있는 알파벳을 입력했는지 확인
+	int IsFind = 0;
 
+	// 현재까지의 정답 출력
+	for (i = 0; i < AnsLen; i++)
+	{
+		printf("%c ", Answer[i]);
+	}
+	// 시도 횟수
+	printf("\n%d 번째 시도 : ", *ErrorCount + 1);
+	// 입력 받기
+	scanf(" %c", &Alpha);
+
+	// 정답 출력
+	for (i = 0; i < AnsLen; i++)
+	{
+		if (Answer[i] == '_')
+		{
+			if (targetEng[i] == Alpha)
+			{
+				Answer[i] = Alpha;
+				IsFind = 1;
+			}
+		}
+	}
+
+	// 틀렸으면 ErrorCount 증가
+	if (IsFind == 0)
+	{
+		(*ErrorCount)++;
+	}
 }
 
-int getch(void){                  // 한 문자만 받는 함수
-    int ch;
-    struct termios buf, save;
-    tcgetattr(0,&save);
-    buf = save;
-    buf.c_lflag &= ~(ICANON|ECHO);
-    buf.c_cc[VMIN] = 1;
-    buf.c_cc[VTIME] = 0;
-    tcsetattr(0, TCSAFLUSH, &buf);
-    ch = getchar();
-    tcsetattr(0, TCSAFLUSH, &save);
-    return ch;
-}
 
-void HangMan_print(char* mean_word, int wrong_num, char* now_text) {
-  printf("%c", system("clear"));
-  printf(">> 영어 단어 암기 프로그램 : 행맨 <<\n");
-  printf("(힌트) %s\n", mean_word);
-  printf("\n--------------------------+");
-  printf("\n\t\t\t");
-  if(wrong_num >= 1)  printf("　O");
-  printf("\n\t\t\t");
-  if(wrong_num == 2) printf("　|");
-  else if(wrong_num == 3) printf(" /|");
-  else if(wrong_num >= 4) printf(" /|\\");
-  printf("\n\t\t\t ");
-  if(wrong_num == 5) printf("/");
-  else if(wrong_num >= 6) printf("/ \\");
-  printf("\n\n");
-  for(int i = 0; i < strlen(now_text); i++) {
-    printf("%c ", now_text[i]);
-  }
-}
+void Hangman()
+{
+	// 영문 저장
+	char targetEng[15];
+	// 뜻, 한글 저장
+	char targetKor[60]; 
+	// 틀린 횟수
+	int ErrorCount = 0;
+	// 정답
+	char Answer[15] = { 0 };
+	// 기타 변수 
+	int i;
+	
+	// 파일에서 랜덤한 단어 얻어오기
+	GetWord(targetEng, targetKor);
 
-int HangMan() {
-  int num;
-  printf("파일명(일차) : ");
-  scanf("%d",&num);
+	// 정답 초기셋팅
+	for (i = 0; i < strlen(targetEng); i++)
+	{
+		Answer[i] = '_';
+	}
 
-  getch();
+	// 6번 실패할때까지
+	while (ErrorCount != 7)
+	{
+		// 화면 초기화
+		system("clear");
+		// 제목 출력
+		printf(">> 영어 단어 암기 프로그램 : 헹맨 << \n");
+		// 힌트 출력
+		printf("(힌트) %s\n", targetKor);
+		// 현재 상태 출력
+		PrintHangman(ErrorCount);
 
-  if(word_list[num]->count == 0)
-  {
-    while(1) {
-      printf("%c", system("clear"));
+		// 도전횟수 모두 사용
+		if (ErrorCount == 6)
+			break;
 
-      printf("파일안에 아무런 내용이 없습니다.\n");
-      printf("ENTER 키 입력 시 Main 화면으로 돌아갑니다.\n");
-      if((getchar())=='\n') return 0;
-    }
-  }
+		// 정답 출력 및 게임하기
+		PrintAnswer(targetEng, Answer, &ErrorCount);
 
+		// 정답을 맞추었다면 종료
+		if (strcmp(targetEng, Answer) == 0)
+		{
+			printf("   ###########################\n");
+			printf("   #### Congratulations!! ####\n");
+			printf("   ###########################\n");
+			break;
+		}
+	}
 
-  srand(time(NULL));
-  int rnd = rand()%(word_list[num]->count);
+	getchar();
 
-  word* tmp = word_list[num]->head;
-  int now = 0;
-  while(now != rnd) {
-    tmp = tmp->next;
-    now++;
-  }
-
-  char *Word = (char*)calloc(strlen(tmp->eng)+1, sizeof(char));
-  strcpy(Word, tmp->eng);
-
-  char *Mean = (char*)calloc(strlen(tmp->kor)+1, sizeof(char));
-  strcpy(Mean, tmp->kor);
-
-  int wrong_num = 0;
-  char* Now_word = (char*)calloc(strlen(Word)+1, sizeof(char));
-  int result = 0;
-  for(int i = 0; i < strlen(Word); i++) {
-    Now_word[i] = '_';
-  }
-  int i = 1;
-  HangMan_print(Mean, wrong_num, Now_word);
-  printf("\n%d번째 시도 : ", i);
-  while(1) {
-    i++;
-    char ch = getch();
-    char cts[2];
-    cts[0] = ch;
-    cts[1] = '\0';
-    if(!strstr(Now_word, cts) && strstr(Word, cts)) {
-      for(int i = 0; i < strlen(Now_word); i++) {
-        if(Word[i] == ch) {
-          Now_word[i] = ch;
-        }
-      }
-    } else {
-      wrong_num++;
-    }
-    HangMan_print(Mean, wrong_num, Now_word);
-
-    if(strstr(Now_word, "_"))
-      printf("\n%d번째 시도 : ", i);
-    else {
-      result++;
-      break;
-    }
-    if(wrong_num >= 6) break;
-  }
-
-  while(1) {
-    HangMan_print(Mean, wrong_num, Now_word);
-    if(result) printf("#####################\n### Congratulations!!! #####################");
-    else printf("실패!");
-    if(strstr(Now_word, "_"))
-      printf("\n%d번째 시도 : ", i);
-    printf("\n\nENTER키를 누르시면 메뉴로 돌아갑니다…");
-    if(getch() == '\n') {
-      return 0;
-    }
-  }
-}
-
-int main() {
-  for(int i = 1; i <= 3; i++) {
-    word_list[i]= (list*)malloc(sizeof(list));
-    list_init(word_list[i]);
-    list_read(word_list[i], i);
-  }
-
-  HangMan();
-  printf("프로그램 종료");
+	// 마지막 엔터키
+	printf("엔터키를 입력하면 메뉴로 돌아갑니다.\n");
+	while (getchar() != '\n');
 }

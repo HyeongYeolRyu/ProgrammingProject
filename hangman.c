@@ -5,8 +5,7 @@ int GetWord(char* targetEng, char* targetKor)
 {
 	int RandomNumber;
 	FILE* fp;
-	int DayCount;
-	char* FileNames[3] = { "1.dic", "2.dic", "3.dic" };
+	char day[sizeof(int) + 1];
 	int i;
 	char tempStr[ENG_LEN + KOR_LEN];
 
@@ -18,17 +17,14 @@ int GetWord(char* targetEng, char* targetKor)
 
 	// 파일명 입력
 	printf("파일명(일차) : ");
-	scanf("%d", &DayCount);
-	
-	// 파일 오픈
-	fp = fopen(FileNames[DayCount - 1], "r");
-	if (fp == NULL)
+	scanf("%s", day);
+
+	if (!(fp = fopen(strcat(day, ".dic"), "r")))
 	{
-		// 오픈 에러
-		printf("FILE ERROR\n");
+		printf(" >> 파일 읽기 에러 : 해당 파일이 없습니다. <<\n");
+		sleep(2);
 		return FILE_ERROR;
 	}
-
 
 	// 랜덤한 숫자까지 읽어서 tempStr 에 저장
 	for (i = 0; i < RandomNumber; i++)
@@ -56,7 +52,7 @@ void PrintHangman(int ErrorCount)
 	if (ErrorCount >= 1) printf("                   O\n");
 	if (ErrorCount >= 2) printf("                 / ");
 	if (ErrorCount >= 3) printf("|");
-	if (ErrorCount >= 4) printf(" \\\n");
+	if (ErrorCount >= 4) printf("\\\n");
 	if (ErrorCount >= 5) printf("                  /");
 	if (ErrorCount >= 6) printf(" \\");
 

@@ -78,7 +78,7 @@ int GetWord(char* targetEng, char* targetKor)
 
 
 // 현재 상태 출력
-void PrintState(int ErrorCount)
+void PrintHangman(int ErrorCount)
 {
 	if (ErrorCount >= 0) printf("-------------------+\n");
 	if (ErrorCount >= 1) printf("                   O\n");
@@ -180,7 +180,7 @@ void Hangman()
 			// 힌트 출력
 			printf("(힌트) %s\n", targetKor);
 			// 현재 상태 출력
-			PrintState(ErrorCount);
+			PrintHangman(ErrorCount);
 
 			// 도전횟수 모두 사용
 			if (ErrorCount == 6)

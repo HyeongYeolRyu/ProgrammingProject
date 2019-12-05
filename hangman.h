@@ -6,6 +6,7 @@
 
 #define NO_ERROR 1
 #define FILE_ERROR 2
+#define NO_WORD 3
 
 // 영어 단어 길이
 #define ENG_LEN 15

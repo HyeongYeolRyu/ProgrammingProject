@@ -9,7 +9,7 @@
 #define NO_WORD 3
 
 // 영어 단어 길이
-#define ENG_LEN 15
+#define ENG_LEN 30
 // 한글 길이
 #define KOR_LEN 60
 

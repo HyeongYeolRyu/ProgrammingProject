@@ -13,9 +13,9 @@ int GetWord(char* targetEng, char* targetKor)
 	int wordCount = 0;
 	// 기타변수
 	int i;
-	char tempStr[ENG_LEN + KOR_LEN];
+	char tempStr[ENG_LEN + KOR_LEN] = { 0 };
 	char Day[2] = { 0 };
-	
+
 
 	// 시드 설정
 	srand((unsigned int)time(NULL));
@@ -23,11 +23,11 @@ int GetWord(char* targetEng, char* targetKor)
 	// 파일 입력
 	printf("파일명(일차) : ");
 	scanf("%s", Day);
-	
+
 	// 파일명 만들기
 	strcpy(FileNames, Day);
 	strcat(FileNames, ".dic");
-	
+
 	// 파일 오픈
 	fp = fopen(FileNames, "r");
 	if (fp == NULL)
@@ -38,38 +38,43 @@ int GetWord(char* targetEng, char* targetKor)
 	}
 
 	// 단어의 개수를 센다.
-	while(!feof(fp))
+	while (!feof(fp))
 	{
 		fgets(tempStr, ENG_LEN + KOR_LEN, fp);
 		wordCount++;
 	}
-	
-	if(wordCount <= 1)
+
+	if (wordCount <= 1)
 	{
-		if(!((tempStr[0] >=65 && tempStr[0] <= 90) || (tempStr[0] >= 97 && tempStr[0] <= 122)))
+		if (!((tempStr[0] >= 65 && tempStr[0] <= 90) || (tempStr[0] >= 97 && tempStr[0] <= 122)))
 		{
 			return NO_WORD;
 		}
 	}
-
-	// 파일포인터를 다시 처음으로
-	fseek(fp, 0, SEEK_SET);
-
-	// 1 ~ 30 까지중 랜덤한 숫자 하나 선택1
-	RandomNumber = rand() % wordCount + 1;
-		
-	// 랜덤한 숫자까지 읽어서 tempStr 에 저장
-	for (i = 0; i < RandomNumber; i++)
+	
+	while (1)
 	{
-		fgets(tempStr, ENG_LEN + KOR_LEN, fp);
+		// 파일포인터를 다시 처음으로
+		fseek(fp, 0, SEEK_SET);
+
+		// 1 ~ 30 까지중 랜덤한 숫자 하나 선택1
+		RandomNumber = rand() % wordCount + 1;
+		
+		// 랜덤한 숫자까지 읽어서 tempStr 에 저장
+		for (i = 0; i < RandomNumber; i++)
+		{
+			fgets(tempStr, ENG_LEN + KOR_LEN, fp);
+		}
+		
+		if (((tempStr[0] >= 65 && tempStr[0] <= 90) || (tempStr[0] >= 97 && tempStr[0] <= 122)))
+			break;
 	}
 
 	// 진짜 데이터 (마지막에 읽은 데이터를 토큰분리하여 저장)
 	strcpy(targetEng, strtok(tempStr, " "));
 	strcpy(targetKor, strtok(NULL, ""));
 	// 엔터기 NULL로 변경
-	targetKor[strlen(targetKor) - 1] = 0;
-
+	// targetKor[strlen(targetKor) - 1] = 0;
 	// 파일 닫기
 	fclose(fp);
 
@@ -142,24 +147,26 @@ void PrintAnswer(char* targetEng, char* Answer, int* ErrorCount)
 void Hangman()
 {
 	// 영문 저장
-	char targetEng[15];
+	char targetEng[30];
 	// 뜻, 한글 저장
-	char targetKor[60]; 
+	char targetKor[60];
 	// 에러 횟수
 	int ErrorCount = 0;
 	// 정답
-	char Answer[15] = { 0 };
+	char Answer[30] = { 0 };
 	// 기타 변수 
 	int i;
 	int Error;
-	
+
 	// 파일에서 랜덤한 단어 얻어오기
+	
 	Error = GetWord(targetEng, targetKor);
-	if(Error == NO_WORD)
+	
+	if (Error == NO_WORD)
 	{
-		printf(" >> 데이터 파일 에러 : 입력한 파일에 아무 단어도 없습니다. <<\n\n");
+		printf(" >> 데이터 파일 에러 : 입력한 파일에 아무 단어도 없습니다. <<\n");
 	}
-	else if(Error == FILE_ERROR)
+	else if (Error == FILE_ERROR)
 	{
 	}
 	else
@@ -199,7 +206,7 @@ void Hangman()
 			}
 		}
 	}
-	
+
 	getchar();
 
 	// 마지막 엔터키
